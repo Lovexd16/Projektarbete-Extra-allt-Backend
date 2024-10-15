@@ -1,5 +1,6 @@
 package com.extraallt.extraallt.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.extraallt.extraallt.models.User;
 import com.extraallt.extraallt.services.UserService;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -55,5 +59,28 @@ public class UserController {
             System.out.println("Användarnamnet var upptaget!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Användarnamnet är upptaget.");
         }
+    }
+
+    @PostMapping("login-user")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        User dbUser = userService.getUserByUsername(user.getUsername());
+
+        if (dbUser != null) {
+            String encodedPassword = dbUser.getPassword();
+            String incomingPassword = user.getPassword();
+
+            if (passwordEncoder.matches(incomingPassword, encodedPassword)) {
+                System.out.println("Loggade in!");
+                @SuppressWarnings("deprecation")
+                String token = Jwts.builder()
+                        .setSubject(dbUser.getUsername())
+                        .setIssuedAt(new Date())
+                        .setExpiration(new Date(System.currentTimeMillis() + jwtExpriationMs))
+                        .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+                return ResponseEntity.ok(token);
+            }
+        }
+        System.out.println("Fel användarnamn eller lösenord vid inloggning!");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Fel användarnamn eller lösenord.");
     }
 }

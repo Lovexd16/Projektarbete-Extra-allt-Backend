@@ -25,6 +25,11 @@ public class UserService {
         return mongoOperations.findAll(User.class);
     }
 
+    public User getUserByUsername(String username) {
+        Query query = new Query(Criteria.where("username").is(username));
+        return mongoOperations.findOne(query, User.class);
+    }
+
     public User addUser(User user) {
         Query query = new Query();
         query.addCriteria(Criteria.where("username").is(user.getUsername()));
