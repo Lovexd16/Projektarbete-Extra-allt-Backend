@@ -22,6 +22,10 @@ public class Temperature {
         this.timestamp = timestamp;
     }
 
+    public Temperature() {
+
+    }
+
     public String getTemperatureId() {
         return temperatureId;
     }

@@ -2,13 +2,15 @@ package com.extraallt.extraallt.models;
 
 public class ChatMessage {
     private String content;
+    private String sender;
 
     public ChatMessage() {
 
     }
 
-    public ChatMessage(String content) {
+    public ChatMessage(String content, String sender) {
         this.content = content;
+        this.sender = sender;
     }
 
     public String getContent() {
@@ -17,6 +19,14 @@ public class ChatMessage {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
 }
