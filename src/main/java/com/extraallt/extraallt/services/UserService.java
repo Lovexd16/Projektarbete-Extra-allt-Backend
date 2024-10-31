@@ -21,15 +21,18 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // Hämtar alla users
     public List<User> getUsers() {
         return mongoOperations.findAll(User.class);
     }
 
+    // Hämtar specifik user baserat på namn. Används för inloggningsmetod
     public User getUserByUsername(String username) {
         Query query = new Query(Criteria.where("username").is(username));
         return mongoOperations.findOne(query, User.class);
     }
 
+    // Lägg till user. Krypterar lösenordet innan tillägning till databasen
     public User addUser(User user) {
         Query query = new Query();
         query.addCriteria(Criteria.where("username").is(user.getUsername()));
