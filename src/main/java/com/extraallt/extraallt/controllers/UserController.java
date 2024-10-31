@@ -37,11 +37,13 @@ public class UserController {
     @Value("${jwt.expiration}")
     private int jwtExpriationMs;
 
+    // Test för att se så backenden fungerar som förväntat
     @GetMapping
     public String getRoot() {
         return "Hello World!";
     }
 
+    // Hämtar alla användare. Främst för testning
     @GetMapping("/users")
     public List<User> getUsers() {
         System.out.println("Hämtar alla users...");
@@ -49,26 +51,33 @@ public class UserController {
         return userService.getUsers();
     }
 
+    // Lägg till user
     @PostMapping("/user")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         try {
             User addedUser = userService.addUser(user);
             System.out.println("User lades till!");
             return ResponseEntity.ok(addedUser);
+            // Om användarnamnet fanns i databasen:
         } catch (Exception e) {
             System.out.println("Användarnamnet var upptaget!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Användarnamnet är upptaget.");
         }
     }
 
+    // Logga in user
     @PostMapping("login-user")
     public ResponseEntity<?> login(@RequestBody User user) {
+        // Hämtar användare baserat på username
         User dbUser = userService.getUserByUsername(user.getUsername());
 
+        // Om användaren finns i databasen, hämta det sparade lösenordet och lösenordet
+        // användaren skrev vid inloggning
         if (dbUser != null) {
             String encodedPassword = dbUser.getPassword();
             String incomingPassword = user.getPassword();
 
+            // Om lösenorden matchar loggas användaren in. Jwt token skapas
             if (passwordEncoder.matches(incomingPassword, encodedPassword)) {
                 System.out.println("Loggade in!");
                 @SuppressWarnings("deprecation")
@@ -79,6 +88,7 @@ public class UserController {
                         .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
                 return ResponseEntity.ok(token);
             }
+            // Om användarnamnet eller lösenordet inte stämmde
         }
         System.out.println("Fel användarnamn eller lösenord vid inloggning!");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Fel användarnamn eller lösenord.");

@@ -6,9 +6,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+//En temperaturmätning har id, grader och tid
 @Document(collection = "Temperatures")
 public class Temperature {
-
     @Id
     private String temperatureId;
     private double celcius;

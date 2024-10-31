@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin("*")
 public class StompController {
 
+    // Metod för att skicka meddelanden i chatt
     @MessageMapping("/chat")
     @SendTo("/topic/chat")
     public String sendChatMessage(@Payload String message) {
