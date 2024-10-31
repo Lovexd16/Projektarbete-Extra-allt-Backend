@@ -15,10 +15,12 @@ public class TemperatureService {
         this.mongoOperations = mongoOperations;
     }
 
+    // Hämta temperaturer
     public List<Temperature> getTemperatures() {
         return mongoOperations.findAll(Temperature.class);
     }
 
+    // Lägger till temperaturer
     public Temperature addTemperature(Temperature temperature) {
         return mongoOperations.insert(temperature);
     }

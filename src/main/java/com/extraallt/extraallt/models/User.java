@@ -3,6 +3,7 @@ package com.extraallt.extraallt.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+//User har id, username och lösenord
 @Document(collection = "Users")
 public class User {
 

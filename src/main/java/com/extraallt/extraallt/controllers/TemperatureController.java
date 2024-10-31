@@ -21,12 +21,14 @@ public class TemperatureController {
         this.temperatureService = temperatureService;
     }
 
+    // Hämtar alla temperaturer från databasen
     @GetMapping("/temperatures")
     public List<Temperature> getTemperatures() {
         System.out.println("Hämtar temperaturer...");
         return temperatureService.getTemperatures();
     }
 
+    // Lägger till temperaturer. Används av arduino
     @PostMapping("/temperature")
     public Temperature addTemperature(@RequestBody Temperature temperature) {
         System.out.println("Mottagen temperatur: " + temperature.getCelcius() + " °C");

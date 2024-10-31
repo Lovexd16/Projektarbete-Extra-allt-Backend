@@ -1,5 +1,6 @@
 package com.extraallt.extraallt.models;
 
+//Håller koll på meddelandets innehåll och vem som skickade
 public class ChatMessage {
     private String content;
     private String sender;
